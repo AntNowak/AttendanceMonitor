@@ -76,24 +76,53 @@ def recognise_from_image(image):
         cv2.imshow("image", image)
     cv2.waitKey()
 
-a = create_student_dir("89")   
-b = create_student_dir("90")
+def recognise_from_video():
+    recogniser = cv2.face.LBPHFaceRecognizer_create()
+    recogniser.read("student_train.yml") 
+    face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
-for i in range(1,11):
-    image = cv2.imread("h" + str(i) + ".jpg")
-    print ("h" + str(i) + ".jpg")
-    crop_image(image, a)
+    cap = cv2.VideoCapture(0)
 
-for i in range(1,11):
-    image = cv2.imread("b" + str(i) + ".jpg")
-    print (i)
-    crop_image(image, b)
+    while True:
+        ret, frame = cap.read()
+        faces = face_cascade.detectMultiScale(frame, 1.3, 5)
+        for (x, y, w, h) in faces:
+            image_grey = cv2.cvtColor(frame[y: y + h, x: x + w], cv2.COLOR_BGR2GRAY)
+            image_grey = cv2.resize(image_grey, (200, 200))
+            id, confidence = recogniser.predict(image_grey)
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
+            student_info = "Student ID: " + str(id) + " (" + str(confidence) + "%)"
+        #display text
+            if (confidence > 0):
+                cv2.putText(frame, student_info, (x, y + h), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
+        # display
+        cv2.imshow('frame', frame)
+
+        # esc to stop
+        k = cv2.waitKey(30) & 0xff
+        if k==27:
+            break
+    cap.release()
+    cv2.destroyAllWindows()
+
+#a = create_student_dir("89")   
+#b = create_student_dir("90")
+
+#for i in range(1,11):
+#    image = cv2.imread("h" + str(i) + ".jpg")
+ #   print ("h" + str(i) + ".jpg")
+  #  crop_image(image, a)
+
+#for i in range(1,11):
+  #  image = cv2.imread("b" + str(i) + ".jpg")
+  #  print (i)
+   # crop_image(image, b)
 
 
-run_training()
+#run_training()
 image = cv2.imread("bh2.jpg")
-recognise_from_image(image)
-
+#recognise_from_image(image)
+recognise_from_video()
 cv2.destroyAllWindows()
 
 
