@@ -24,6 +24,9 @@
     <Compile Include="main.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="mask_train.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Train.py" />
     <Compile Include="ImageUtils.py">
       <SubType>Code</SubType>

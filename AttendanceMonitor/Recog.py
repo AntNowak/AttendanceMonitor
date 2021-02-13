@@ -1,5 +1,6 @@
 import cv2
 import ImageUtils
+import base64
 
 class Recogniser:
 
@@ -7,6 +8,7 @@ class Recogniser:
         self.cam = cv2.VideoCapture(0)
         self.recogniser = cv2.face.LBPHFaceRecognizer_create()
         self.recogniser.read("student_train.yml")
+        #self.mask_recogniser.read("mask_train.yml")
 
     def __del__(self):
         self.cam.release()
@@ -18,17 +20,20 @@ class Recogniser:
         image_grey, bounding_box = ImageUtils.crop_and_greyscale(image)
         if(not image_grey.size == 0):
             studentID, confidence = self.recogniser.predict(image_grey)
+            #is_mask, confidence = self.mask_recogniser.predict(image_grey)
             (x, y, w, h) = bounding_box
             cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)
 
             student_info = "Student ID: " + str(studentID) + " (" + str(confidence) + "%)"
             cv2.putText(image, student_info, (x, y + h), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
             
-            ret, jpeg = cv2.imencode('.jpg', image)
-            return studentID, confidence, jpeg.tobytes()
+            ret, image = cv2.imencode('.jpg', image)
+            data = base64.b64encode(image).decode("UTF-8")
+            return studentID, confidence, data
         else:
-            ret, jpeg = cv2.imencode('.jpg', image)
-            return -1, -1, jpeg.tobytes()
+            ret, image = cv2.imencode('.jpg', image)
+            data = base64.b64encode(image).decode("UTF-8")
+            return -1, -1, data
 
 #r = Recog()
 
