@@ -1,3 +1,4 @@
 *.jpg
 user_data
-student_train.yml
+mask_data
+*.yml
