@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>ed8c02cb-45db-4bc3-8860-18d7420f6124</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Train.py</StartupFile>
+    <StartupFile>train.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -27,11 +27,11 @@
     <Compile Include="mask_train.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Train.py" />
-    <Compile Include="ImageUtils.py">
+    <Compile Include="train.py" />
+    <Compile Include="image_utils.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Recog.py">
+    <Compile Include="recog.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

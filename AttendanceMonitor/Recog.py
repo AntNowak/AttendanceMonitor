@@ -1,5 +1,5 @@
 import cv2
-import ImageUtils
+import image_utils
 import base64
 
 class Recogniser:
@@ -17,7 +17,7 @@ class Recogniser:
         ret, image = self.cam.read()
         if(not ret):
             print("FAILED TO GET IMAGE")
-        image_grey, bounding_box = ImageUtils.crop_and_greyscale(image)
+        image_grey, bounding_box = image_utils.crop_and_greyscale(image)
         if(not image_grey.size == 0):
             studentID, confidence = self.recogniser.predict(image_grey)
             #is_mask, confidence = self.mask_recogniser.predict(image_grey)

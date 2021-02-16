@@ -1,7 +1,7 @@
 
 import cv2
 import random
-import ImageUtils
+import image_utils
 import numpy as np
 from os import path, mkdir, listdir
 
