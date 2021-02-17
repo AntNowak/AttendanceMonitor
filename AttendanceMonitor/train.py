@@ -53,15 +53,16 @@ class Train:
             if(current_frame % 10 == 0):
                 if(not ret):
                     return False
-                image, bounding_box = ImageUtils.crop_and_greyscale(image)
+                image, bounding_box = image_utils.crop_and_greyscale(image)
                 if(not image.size == 0):
                     cv2.imwrite(student_dir + "/" + str(random.randint(0,50000))+ ".jpg", image)
+                    print ("image saved")
                     saved_images += 1
             current_frame += 1
 
 r = Train()
-#r.generate_training_set("92")
-r.run_training()
+r.generate_training_set("93")
+#r.run_training()
     #def recognise_from_video():
     #    recogniser = cv2.face.LBPHFaceRecognizer_create()
     #    recogniser.read("student_train.yml") 
