@@ -2,6 +2,7 @@ from threading import Lock
 from flask import Flask, render_template, request
 from flask_socketio import SocketIO, emit, disconnect
 from recog import Recogniser
+from flask_mysqldb import MySQL
 
 
 # Set this variable to "threading", "eventlet" or "gevent" to test the
@@ -14,6 +15,16 @@ app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, async_mode=async_mode)
 thread = None
 thread_lock = Lock()
+
+mysql = MySQL()
+mysql.init_app(app)
+
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'root'
+app.config['MYSQL_DB'] = 'studentrecog'
+
+
 
 def background_thread():
     state = 0
@@ -47,6 +58,28 @@ def background_thread():
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/homepage')
+def home():
+    return render_template('homepage.html')
+
+@app.route('/enroll', methods=['GET', 'POST'])
+def enroll():
+    if request.method == "POST":
+        details = request.form
+        firstName = details['fname']
+        lastName = details['lname']
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO student_info(First_Name, Last_Name) VALUES (%s, %s)", (firstName, lastName))
+        mysql.connection.commit()
+        cur.close()
+        return 'success'
+    return render_template('student.html')
+
+
+@app.route('/frontend')
+def frontend():
+    return render_template('frontend.html')
 
 @socketio.event
 def connect():

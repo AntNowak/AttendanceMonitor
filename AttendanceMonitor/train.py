@@ -63,6 +63,8 @@ class Train:
 r = Train()
 r.generate_training_set("93")
 #r.run_training()
+
+
     #def recognise_from_video():
     #    recogniser = cv2.face.LBPHFaceRecognizer_create()
     #    recogniser.read("student_train.yml") 
