@@ -37,14 +37,14 @@ def background_thread():
            if(r2 > 99000):
                 state = 2
                 socketio.emit('state_change', { 'new_state':  'update database' })
-        #elif(state == 2):
-           # #MAKE DATABASE REQUEST
-           # found_student_id = -1
-            #found_confidence = 0 
-            #state = 0
-            #socketio.emit('state_change', { 'new_state':  'face' })
+        elif(state == 2):
+           #MAKE DATABASE REQUEST
+            found_student_id = -1
+            found_confidence = 0 
+            state = 0
+            socketio.emit('state_change', { 'new_state':  'face' })
 
-@app.route('/')
+#@app.route('/')
 def index():
     return render_template('index.html')
 

@@ -28,10 +28,10 @@ class Train:
         user_dirs = listdir(user_data_dir)
         images = []
         ids = []
-        #interate the student IDs
+        #iterate the student IDs
         for u in user_dirs:
             user_files = listdir(user_data_dir + "/" + u)
-            #interating student images for IDs
+            #iterating student images for IDs
             for f in user_files:
                 image = cv2.imread(user_data_dir + "/" + u + "/" + f)
                 image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
