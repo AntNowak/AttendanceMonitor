@@ -8,10 +8,16 @@ class Recogniser:
         self.cam = cv2.VideoCapture(0)
         self.recogniser = cv2.face.LBPHFaceRecognizer_create()
         self.recogniser.read("student_train.yml")
+        self.image = ""
         #self.mask_recogniser.read("mask_train.yml")
 
     def __del__(self):
         self.cam.release()
+    
+    def setImage(self, img):
+        self.image = img
+    def getImage(self):
+        return self.image
 
     def get_student_id(self):
         ret, image = self.cam.read()
@@ -29,10 +35,12 @@ class Recogniser:
             
             ret, image = cv2.imencode('.jpg', image)
             data = base64.b64encode(image).decode("UTF-8")
+            setImage(data)
             return studentID, confidence, data
         else:
             ret, image = cv2.imencode('.jpg', image)
             data = base64.b64encode(image).decode("UTF-8")
+            setImage(data)
             return -1, -1, data
 
 #r = Recog()

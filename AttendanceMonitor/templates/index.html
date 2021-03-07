@@ -19,9 +19,6 @@
             // Event handler for server sent data.
             socket.on('image_data', function (msg) {
                 $('#img').attr('src', msg.buffer);
-                $('#studentID').text(function (i, oldText) {
-                    // return "Student ID: " + msg.student_id
-                });
                 $('#confidence').text(function (i, oldText) {
                      return "Distance (lower the better): " + msg.confidence
                 });
