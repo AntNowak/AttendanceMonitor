@@ -4,20 +4,17 @@ import base64
 
 class Recogniser:
 
-    def __init__ (self):
+    def __init__ (self, check_mask):
         self.cam = cv2.VideoCapture(0)
         self.recogniser = cv2.face.LBPHFaceRecognizer_create()
-        self.recogniser.read("student_train.yml")
+        if check_mask:
+            self.recogniser.read("mask_train.yml")
+        else:
+            self.recogniser.read("student_train.yml")
         self.image = ""
-        #self.mask_recogniser.read("mask_train.yml")
 
     def __del__(self):
         self.cam.release()
-    
-    def setImage(self, img):
-        self.image = img
-    def getImage(self):
-        return self.image
 
     def get_student_id(self):
         ret, image = self.cam.read()
@@ -25,22 +22,20 @@ class Recogniser:
             print("FAILED TO GET IMAGE")
         image_grey, bounding_box = image_utils.crop_and_greyscale(image)
         if(not image_grey.size == 0):
-            studentID, confidence = self.recogniser.predict(image_grey)
-            #is_mask, confidence = self.mask_recogniser.predict(image_grey)
+            result, confidence = self.recogniser.predict(image_grey)
+
             (x, y, w, h) = bounding_box
             cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)
 
-            student_info = "Student ID: " + str(studentID) + " (" + str(confidence) + "%)"
+            student_info = "Result: " + str(result) + " (" + str(confidence) + "%)"
             cv2.putText(image, student_info, (x, y + h), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
             
             ret, image = cv2.imencode('.jpg', image)
             data = base64.b64encode(image).decode("UTF-8")
-            setImage(data)
-            return studentID, confidence, data
+            return result, confidence, data
         else:
             ret, image = cv2.imencode('.jpg', image)
             data = base64.b64encode(image).decode("UTF-8")
-            setImage(data)
             return -1, -1, data
 
 #r = Recog()
