@@ -1,5 +1,5 @@
 from threading import Lock
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session, redirect, url_for, g
 from flask_socketio import SocketIO, emit, disconnect
 from recog import Recogniser
 from flask_mysqldb import MySQL
@@ -55,13 +55,32 @@ def background_thread():
             #state = 0
             #socketio.emit('state_change', { 'new_state':  'face' })
 
+@app.before_request
+def before_request():
+    g.user = None
+
+    if 'user_id' in session:
+        user = 'username' #name of user needs to be taken from databse
+        g.user = user
+
 @app.route('/')
+def blank():
+    return render_template('Login.html')
+
+@app.route('/lectures')
 def index():
-    return render_template('index.html')
+    if session.get('logged_in') == True:
+        return render_template('Lectures.html')
+    else:
+        return redirect(url_for('login'))
+        
 
 @app.route('/homepage')
-def home():
-    return render_template('homepage.html')
+def homepage():
+    if session.get('logged_in') == True:
+        return render_template('Homepage.html')
+    else:
+        return redirect(url_for('login'))
 
 @app.route('/enroll', methods=['GET', 'POST'])
 def enroll():
@@ -77,9 +96,29 @@ def enroll():
     return render_template('student.html')
 
 
-@app.route('/frontend')
-def frontend():
-    return render_template('frontend.html')
+@app.route('/Login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        session.pop('user_id', None)
+
+        username = request.form['username']
+        password = request.form['password']
+
+        if username == 'username' and password == 'password':
+            session['user_id'] = username
+            session['logged_in'] = True
+
+            return redirect(url_for('homepage'))
+        else:
+            return redirect('Login')
+    else:
+        return render_template('Login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('user_id', None)
+    session.pop('logged_in', None)
+    return render_template('Login.html')
 
 @socketio.event
 def connect():

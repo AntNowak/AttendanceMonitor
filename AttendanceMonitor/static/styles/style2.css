@@ -1,83 +1,101 @@
+/* Lectures and homepage style sheet */
 
 
-
-/*navbar colours*
-.navbar a {
-    float: left;
-    text-align: center;
-    padding: 12px;
-    background-color:#000000;
-    color:rgb(255, 255, 255);
-    text-decoration: none;
-    font-size: 25px;
-}
-
-/*changes colour when buttons hovered over*
-.navbar a:hover {
-    background-color:#9c0000;
-}
-
-/*current/active navbar colour*
-.active {
-    background-color:#f30404fa;
-    
-}
-
-/*puts logout button to right side*
-.navbar-right {
-    float:right;
-}
-*/
-/* creates column for webcam on left side of screen*/
-.column1 {
-    float:left;
-    width: 100%;
-    padding: 10ptx;
+.homeColumn { /* container for sql query */
+    margin: 0;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    width: 95%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -40%);
     color: rgb(255, 255, 255);
-    background-color: rgb(141, 141, 141);
+    background-color: #d83131;
+    border-radius: 15px;
 }
 
-
-.row{
-    height: 100%;
+.webcam { /* container to hold webcam footage */
+    margin: 0;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    width: 65%;
+    height: 50%;
+    top: 60%;
+    left: 35%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    color: rgb(255, 255, 255);
+    background-color: #d83131;
+    background-image: URL("Group_photograph_facial.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 15px;
 }
 
+.sideColumn { /* text box column */
+    margin: 0;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    width: 25%;
+    height: 50%;
+    top: 60%;
+    left: 85%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    color: rgb(255, 255, 255);
+    background-color: #d83131;
+    border-radius: 15px;
+}
 
-ul{
-    list-style-type:none;
-    margin:0;
-    padding:0;
-    overflow:hidden;
-    background-color:#333;
+.head { /* text box for titles */
+    margin: auto;
+    text-align: center;
+    float: Left;
+    width: 30%;
+    position: absolute;
+    top: 20%;
+    left: 2.5%;
+    color: rgb(0, 0, 0);
+    background-color: #949494;
+    border-radius: 10px;
+}
+
+/* navbar: */
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
     font-size: 25px;
 }
 
-li{
-    float:left;
+li { /* home and lectures buttons */
+    float: left;
 }
 
-li a {
-    display:block ;
-    color:rgb(255, 255, 255);
-    text-align:center;
-    padding: 14px 16px;
-    text-decoration:none;
+    li a {
+        display: block;
+        color: rgb(255, 255, 255);
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+        li a:hover {
+            background-color: #9c0000;
+        }
+
+.active {
+    background-color: #707070;
 }
 
-li a:hover {
-    background-color:#9c0000;
-}
-
-.active{
-    background-color:#707070;
-
-}
 /*background colours*/
-body{
+body {
     background-color: rgb(212, 53, 32);
-    /*background-image:url({{ url_for('static', filename='cover.jpg') }}) ;*/
+    background-image: url(backgrounds/uni.jpg);
+    background-attachment: scroll;
     background-repeat: no-repeat;
     background-size: cover;
 }
-
-
