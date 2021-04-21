@@ -65,7 +65,7 @@ def before_request():
 
 @app.route('/')
 def blank():
-    return render_template('Login.html')
+    return redirect(url_for('login'))
 
 @app.route('/lectures')
 def index():
@@ -110,7 +110,7 @@ def login():
 
             return redirect(url_for('homepage'))
         else:
-            return redirect('Login')
+            return redirect(url_for('login'))
     else:
         return render_template('Login.html')
 
@@ -118,7 +118,7 @@ def login():
 def logout():
     session.pop('user_id', None)
     session.pop('logged_in', None)
-    return render_template('Login.html')
+    return redirect(url_for('login'))
 
 @socketio.event
 def connect():
