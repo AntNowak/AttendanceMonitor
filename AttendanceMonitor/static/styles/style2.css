@@ -99,3 +99,18 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
 }
+/*design for login container*/
+.login-container {
+    margin: 0;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    width: 20%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -80%);
+    background: blue;
+    border-radius: 25px;
+    background-position: center;
+    color: white;
+}
