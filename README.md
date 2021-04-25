@@ -1,4 +1,11 @@
 # AttendanceMonitor
 Lincoln Uni - G5 - TSE Project
 
-Current Model.h5 file for mask recog too large to upload to github
+
+------STILL IN PROGRESS-----
+
+
+Changing the mask training to use tensorflow, should be more accurate and will not end up with a 11gb .yml file
+
+
+
