@@ -1,6 +1,7 @@
 /* Lectures and homepage style sheet */
 
 
+
 .homeColumn { /* container for sql query */
     margin: 0;
     padding-top: 5%;
@@ -9,7 +10,7 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -40%);
+    transform: translate(-50%, -50%);
     color: rgb(255, 255, 255);
     background-color: #d83131;
     border-radius: 15px;
@@ -17,35 +18,29 @@
 
 .webcam { /* container to hold webcam footage */
     margin: 0;
-    padding-top: 5%;
-    padding-bottom: 5%;
     width: 65%;
-    height: 50%;
+    height: 65%;
     top: 60%;
     left: 35%;
     position: absolute;
     transform: translate(-50%, -50%);
-    color: rgb(255, 255, 255);
-    background-color: #d83131;
-    background-image: URL("Group_photograph_facial.png");
-    background-repeat: no-repeat;
-    background-size: cover;
     border-radius: 15px;
 }
 
 .sideColumn { /* text box column */
     margin: 0;
-    padding-top: 5%;
-    padding-bottom: 5%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1%;
     width: 25%;
-    height: 50%;
-    top: 60%;
-    left: 85%;
-    position: absolute;
-    transform: translate(-50%, -50%);
+    left: 75%;
+    transform: translate(85%, 33%);
     color: rgb(255, 255, 255);
     background-color: #d83131;
     border-radius: 15px;
+    word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .head { /* text box for titles */
@@ -93,14 +88,14 @@ li { /* home and lectures buttons */
 
 /*background colours*/
 body {
-    background-color: rgb(212, 53, 32);
+    background-color: #333;
     background-image: url(backgrounds/uni.jpg);
     background-attachment: scroll;
     background-repeat: no-repeat;
     background-size: cover;
 }
 /*design for login container*/
-.login-container {
+.enroll-container {
     margin: 0;
     padding-top: 5%;
     padding-bottom: 5%;
@@ -113,4 +108,13 @@ body {
     border-radius: 25px;
     background-position: center;
     color: white;
+}
+
+.webcamImage {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+    transform: translate(0%, -4%);
+    border-radius: 15px;
 }
