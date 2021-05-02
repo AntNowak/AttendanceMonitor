@@ -1,27 +1,30 @@
 <!DOCTYPE html>
-<html lang ="en">
+<html lang="en">
 <head>
-<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style2.css') }}"> <!--includes css file-->
-<title> Register </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<meta http-equiv="refresh" content="<!?php echo $sec?>;URL='<!?php echo $page?>'"> refreshes the page when using php language to code-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style2.css') }}"> <!--includes css file-->
+    <title> Register </title>
 </head>
 <body>
 
-<!--nav bar-->
-<ul>
-  <li><a class="active" href="#Home">Home</a></li>
-  <li><a href="lectures.php">Lectures</a></li>
-  <li><a href="/enroll">Enroll Student</a></li>
-  <li><a href="/">Register Student</a></li>
-  <li style="float:right"><a href="signout.php">Logout</a></li>
-</ul>
+    <!--nav bar-->
+    <ul>
+        <li><a class="active" href="{{ url_for('homepage') }}">Home</a></li>
+        <li><a href="{{ url_for('index') }}">Lectures</a></li>
+        <li style="float:right"><a href="{{ url_for('logout') }}">logout?</a></li>
+    </ul>
 
-<!--splits the remaining page into two columns-->
-<br><br><br>
-<div class="row">
-    <div class="column1">
+    <!--allows the creation of another box surrounding the welcome text for display purposes.-->
+    <div class="head">
+        welcome back {{g.user.name}}
+    </div>
+
+    <!--splits the remaining page into two columns-->
+    <br><br><br>
+    <div class="homeColumn">
         <h1>text</h1>
     </div>
-</div>
 </body>
 </html>
 
