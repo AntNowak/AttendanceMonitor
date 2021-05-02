@@ -21,9 +21,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="main.py">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="app.py" />
     <Compile Include="mask_train.py">
       <SubType>Code</SubType>
     </Compile>
@@ -37,7 +35,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
-    <Content Include="templates\index.html" />
+    <Content Include="templates\Enroll.html" />
+    <Content Include="templates\homepage.html" />
+    <Content Include="templates\Lectures.html" />
+    <Content Include="templates\Login.html" />
+    <Content Include="templates\student.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="templates\" />
