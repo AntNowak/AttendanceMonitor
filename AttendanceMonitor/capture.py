@@ -29,12 +29,12 @@ class Sampler:
         ret, image = self.cam.read()
         if(not ret):
             print("FAILED TO GET IMAGE")
-        image_color, bounding_box = image_utils.crop_colour(image)
-        if(not image_color.size == 0):
-            rsize_image = cv2.resize(image_color, (200, 200))
-            (x, y, w, h) = bounding_box
-            cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)
-            return 1, rsize_image, image
+            image_color, bounding_box = image_utils.crop_colour(image)
+            if(not image_color.size == 0):
+                rsize_image = cv2.resize(image_color, (200, 200))
+                (x, y, w, h) = bounding_box
+                cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)
+                return 1, rsize_image, image
         else:
             return -1, None, image
 

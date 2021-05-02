@@ -6,7 +6,7 @@ import numpy as np
 
 class MaskRecogniser:
     def __init__ (self):
-        self.cam = cv2.VideoCapture(0)
+        self.cam = None
         json_file = open('model.json', 'r')
         loaded_model_json = json_file.read()
         json_file.close()
@@ -14,13 +14,17 @@ class MaskRecogniser:
         # load weights into new model
         self.model.load_weights("model.h5")
         print("Loaded model from disk")
+        self.active = True
 
         #self.model = tf.keras.models.load_model("mask_model")
 
     def __del__(self):
         self.cam.release()
+    
+    def set_camera(self, camera):
+        self.cam = camera
 
-    def get_student_id(self):
+    def get_mask(self):
         ret, image = self.cam.read()
         if(not ret):
             print("FAILED TO GET IMAGE")
@@ -35,29 +39,32 @@ class MaskRecogniser:
             cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)
 
             student_info = "Mask: " + str(prediction)
-            if(prediction > 0.999):
+            if(prediction > 0.9999):
                 cv2.putText(image, student_info, (x, y + h), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
             else:  
                 cv2.putText(image, student_info, (x, y + h), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
             
             ret, image2 = cv2.imencode('.jpg', image)
             data = base64.b64encode(image2).decode("UTF-8")
-            return prediction, prediction, image
+            return -1, prediction[0][0], data
         else:
             ret, image2 = cv2.imencode('.jpg', image)
             data = base64.b64encode(image2).decode("UTF-8")
-            return -1, -1, image
+            return -1, -1, data
 
 
 class Recogniser:
     def __init__ (self):
-        self.cam = cv2.VideoCapture(0)
+        self.cam = None
         self.recogniser = cv2.face.LBPHFaceRecognizer_create()
         self.recogniser.read("student_train.yml")
-        #self.mask_recogniser.read("mask_train.yml")
+        self.active = True
 
     def __del__(self):
         self.cam.release()
+
+    def set_camera(self, camera):
+        self.cam = camera
 
     def get_student_id(self):
         ret, image = self.cam.read()
@@ -81,13 +88,13 @@ class Recogniser:
             data = base64.b64encode(image).decode("UTF-8")
             return -1, -1, data
 
-r = MaskRecogniser()
+#r = MaskRecogniser()
 
-while True:
-   s, c, i = r.get_student_id()
-   cv2.imshow('video', i)
-   k = cv2.waitKey(30) & 0xff
-   if k == 27: # press 'ESC' to quit
-       break
+#while True:
+#   s, c, i = r.get_student_id()
+#   cv2.imshow('video', i)
+#   k = cv2.waitKey(30) & 0xff
+#   if k == 27: # press 'ESC' to quit
+#       break
 
 cv2.destroyAllWindows()

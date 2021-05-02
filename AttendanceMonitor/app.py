@@ -2,8 +2,9 @@ from threading import Lock
 from flask import Flask, render_template, request, session, redirect, url_for, g
 from flask_socketio import SocketIO, emit, disconnect
 from recog import Recogniser
+from recog import MaskRecogniser
 from flask_mysqldb import MySQL
-
+import cv2
 
 # Set this variable to "threading", "eventlet" or "gevent" to test the
 # different async modes, or leave it set to None for the application to choose
@@ -31,29 +32,35 @@ def background_thread():
     found_student_id = -1
     found_confidence = -1
     socketio.emit('state_change', { 'new_state':  'face' })
+    cam = cv2.VideoCapture(0)
     r = Recogniser()
+    m = MaskRecogniser()
+    m.set_camera(cam)
+    r.set_camera(cam)
+
     while True:
         socketio.sleep(0.03)
         if(state == 0):
             r1, r2, image = r.get_student_id()
             socketio.emit('image_data', { 'buffer':  'data:image/jpg;base64,'+image, 'student_id' : r1, 'confidence' : r2})
-            if(r2 < 90):
+            if(r2 < 90) and (r2 != -1 and r1 != -1):
+                print("Found Student ID: " + str(r1))
                 found_student_id = r1
                 found_confidence = r2
                 state = 1
                 socketio.emit('state_change', { 'new_state':  'mask' })
         elif(state == 1):
-           found_student_id, r2, image = r.get_student_id()
-           socketio.emit('image_data', { 'buffer': 'data:image/jpg;base64,'+image, 'student_id' : found_student_id, 'confidence' : r2})
-           if(r2 > 99000):
+           _, r2, image = m.get_mask()
+           socketio.emit('image_data', { 'buffer': 'data:image/jpg;base64,'+image, 'student_id' : found_student_id, 'confidence' : str(r2)})
+           if(r2 >= 0.9999):
                 state = 2
                 socketio.emit('state_change', { 'new_state':  'update database' })
-        #elif(state == 2):
-           # #MAKE DATABASE REQUEST
-           # found_student_id = -1
-            #found_confidence = 0 
-            #state = 0
-            #socketio.emit('state_change', { 'new_state':  'face' })
+        elif(state == 2):
+            #MAKE DATABASE REQUEST
+            found_student_id = -1
+            found_confidence = 0 
+            state = 0
+            socketio.emit('state_change', { 'new_state':  'face' })
 
 @app.before_request
 def before_request():

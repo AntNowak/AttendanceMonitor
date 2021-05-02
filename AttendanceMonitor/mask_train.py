@@ -141,8 +141,8 @@ class MaskTrainNN:
         print("Done")
         
         
-
-#https://github.com/X-zhangyang/Real-World-Masked-Face-Dataset - masked dataset source
+#----- OLD WAY OF TRAINING --- NOT USED-----
+#https://github.com/X-zhangyang/Real-World-Masked-Face-Dataset - masked dataset source 
 class MaskTrain:
     def run_training(self):
         mask_data_dir = "mask_data"
@@ -155,7 +155,7 @@ class MaskTrain:
         images = []
         ids = []
 
-        #interate the masked data set
+        #iterate the masked data set
         for u in mask_dirs:
             user_files = listdir(mask_data_dir + "/" + masked_folder + "/" + u)
             for f in user_files:
@@ -167,7 +167,7 @@ class MaskTrain:
                 ids.append(1)
                 images.append(image)
 
-        #interate the unmasked data set
+        #iterate the unmasked data set
         for u in unmask_dirs:
             print(mask_data_dir + "/" + unmasked_folder + "/" + u)
             user_files = listdir(mask_data_dir + "/" + unmasked_folder + "/" + u)
