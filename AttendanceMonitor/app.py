@@ -110,7 +110,7 @@ def login():
 
         username = request.form['username']
         password = request.form['password']
-
+        #this bit needs call for login info 
         if username == 'username' and password == 'password':
             session['user_id'] = username
             session['logged_in'] = True

@@ -4,16 +4,56 @@
 
 .homeColumn { /* container for sql query */
     margin: 0;
-    padding-top: 5%;
-    padding-bottom: 5%;
-    width: 95%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    width: 70%;
     position: absolute;
-    top: 50%;
+    top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
     color: rgb(255, 255, 255);
     background-color: #d83131;
     border-radius: 15px;
+}
+
+.upcomingLectures{
+    border-collapse: collapse;
+    margin: auto;
+    min-width: 500px;
+    box-shadow: 0 0 20px rgb(75 75 75);
+}
+
+.upcomingLectures thead tr {
+    background-color: rgb(75 75 75);
+    color: white;
+    text-align: center;
+}
+
+.upcomingLectures th,
+.upcomingLectures td {
+    padding: 12px 15px;
+}
+
+.upcomingLectures tbody tr{
+    border-bottom: 1px solid #a9a9a9;
+    background-color: rgb(255, 255, 255);
+    color: black;
+}
+
+.upcomingLectures tbody tr:nth-last-of-type(even){
+    background-color: #d69b9b;
+    color: black;
+}
+
+.upcomingLectures tbody:last-of-type {
+    border-bottom: 2px solid #9c0000;
+    background-color: rgb(255, 255, 255);
+    color: black;
+}
+
+.upcomingLectures tbody tr.activeRow {
+    font-weight: 900;
+    color: blue;
 }
 
 .webcam { /* container to hold webcam footage */
@@ -47,13 +87,13 @@
     margin: 0;
     margin-left: auto;
     margin-right: auto;
-    padding: 1%;
+    padding: 0.5%;
     text-align: center;
     float: Left;
-    width: 30%;
+    width: 15%;
     position: absolute;
     top: 20%;
-    left: 2.5%;
+    left: 3%;
     color: rgb(0, 0, 0);
     background-color: #949494;
     border-radius: 10px;

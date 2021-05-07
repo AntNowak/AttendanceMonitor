@@ -18,14 +18,40 @@
     <!--allows the creation of another box surrounding the welcome text for display purposes.-->
     <div class="head">
         <h1>
-            welcome back {{g.user.name}}
+            Welcome back {{g.user.name}}
         </h1>        
     </div>
 
     <!--splits the remaining page into two columns-->
     <br><br><br>
     <div class="homeColumn">
-        <h1>text</h1>
+        <center>
+            <h1>Upcoming Lectures</h1>
+            <br /><br />
+            <table class="upcomingLectures">
+                <thead>
+                    <tr>
+                        <!--table headers-->
+                        <th>Start Time</th>
+                        <th>Module</th>
+                        <th>End Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--Items in the table go inside the th tags-->
+                    <tr class="activeRow">
+                        <td>10:00</td>
+                        <td>User Experience</td>
+                        <td>12:00</td>
+                    </tr>
+                    <tr>
+                        <td>14:00</td>
+                        <td>Team Sofftware Engineering</td>
+                        <td>16:00</td>
+                    </tr> <!--next row-->
+                </tbody>
+            </table>
+        </center>
     </div>
 </body>
 </html>
