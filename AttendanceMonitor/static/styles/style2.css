@@ -95,8 +95,8 @@
     position: absolute;
     top: 20%;
     left: 3%;
-    color: rgb(0, 0, 0);
-    background-color: #949494;
+    color: white;
+    background-color: #333;
     border-radius: 10px;
     word-break: break-word;
     overflow: hidden;
