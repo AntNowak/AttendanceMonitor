@@ -100,7 +100,7 @@ def enroll():
         mysql.connection.commit()
         cur.close()
         return 'success'
-    return render_template('student.html')
+    return render_template('Enroll.html')
 
 
 @app.route('/Login', methods=['GET', 'POST'])
