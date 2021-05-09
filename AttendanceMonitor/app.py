@@ -85,7 +85,7 @@ def index():
 @app.route('/homepage')
 def homepage():
     if session.get('logged_in') == True:
-        return render_template('Homepage.html')
+        return render_template('Homepage.html', name=g.user)
     else:
         return redirect(url_for('login'))
 

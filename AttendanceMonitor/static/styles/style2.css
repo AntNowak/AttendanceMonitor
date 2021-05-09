@@ -8,54 +8,54 @@
     padding-bottom: 2%;
     width: 70%;
     min-width: 650px;
-    position: absolute;
-    top: 60%;
+    display: block;
+    top: 65%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(20%, 50%);
     color: rgb(255, 255, 255);
     background-color: #d83131;
     border-radius: 15px;
 }
 
-.upcomingLectures{
+.upcomingLectures {
     border-collapse: collapse;
     margin: auto;
     min-width: 500px;
     box-shadow: 0 0 20px rgb(75 75 75);
 }
 
-.upcomingLectures thead tr {
-    background-color: rgb(75 75 75);
-    color: white;
-    text-align: center;
-}
+    .upcomingLectures thead tr {
+        background-color: rgb(75 75 75);
+        color: white;
+        text-align: center;
+    }
 
-.upcomingLectures th,
-.upcomingLectures td {
-    padding: 12px 15px;
-}
+    .upcomingLectures th,
+    .upcomingLectures td {
+        padding: 12px 15px;
+    }
 
-.upcomingLectures tbody tr{
-    border-bottom: 1px solid #a9a9a9;
-    background-color: rgb(255, 255, 255);
-    color: black;
-}
+    .upcomingLectures tbody tr {
+        border-bottom: 1px solid #a9a9a9;
+        background-color: rgb(255, 255, 255);
+        color: black;
+    }
 
-.upcomingLectures tbody tr:nth-last-of-type(even){
-    background-color: #d69b9b;
-    color: black;
-}
+        .upcomingLectures tbody tr:nth-last-of-type(even) {
+            background-color: #d69b9b;
+            color: black;
+        }
 
-.upcomingLectures tbody:last-of-type {
-    border-bottom: 2px solid #9c0000;
-    background-color: rgb(255, 255, 255);
-    color: black;
-}
+    .upcomingLectures tbody:last-of-type {
+        border-bottom: 2px solid #9c0000;
+        background-color: rgb(255, 255, 255);
+        color: black;
+    }
 
-.upcomingLectures tbody tr.activeRow {
-    font-weight: 900;
-    color: blue;
-}
+    .upcomingLectures tbody tr.activeRow {
+        font-weight: 900;
+        color: blue;
+    }
 
 .webcam { /* container to hold webcam footage */
     margin: 0;
@@ -88,12 +88,13 @@
     margin: 0;
     margin-left: auto;
     margin-right: auto;
-    padding: 0.5%;
+    min-width: 250px;
+    transform: translate(5%, 50%);
     text-align: center;
     float: Left;
-    width: 15%;
-    position: absolute;
-    top: 20%;
+    width: 35%;
+    display: block;
+    top: 18%;
     left: 3%;
     color: white;
     background-color: #333;
