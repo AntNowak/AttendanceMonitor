@@ -4,6 +4,7 @@ from flask_socketio import SocketIO, emit, disconnect
 from recog import Recogniser
 from recog import MaskRecogniser
 from flask_mysqldb import MySQL
+import MySQLdb.cursors
 import cv2
 
 # Set this variable to "threading", "eventlet" or "gevent" to test the
@@ -16,16 +17,12 @@ app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, async_mode=async_mode)
 thread = None
 thread_lock = Lock()
-
-mysql = MySQL()
-mysql.init_app(app)
+mysql = MySQL(app)
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'root'
+app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'studentrecog'
-
-
 
 def background_thread():
     state = 0
@@ -57,6 +54,10 @@ def background_thread():
                 socketio.emit('state_change', { 'new_state':  'update database' })
         elif(state == 2):
             #MAKE DATABASE REQUEST
+            cur = mysql.connection.cursor()
+            cur.execute("UPDATE attendance_register SET Student_ID = %s, SET Present = '1' WHERE Student_ID = %s",(found_student_id, found_student_id))
+            mysql.connection.commit()
+            cur.close()
             found_student_id = -1
             found_confidence = 0 
             state = 0
@@ -85,7 +86,7 @@ def index():
 @app.route('/homepage')
 def homepage():
     if session.get('logged_in') == True:
-        return render_template('Homepage.html', name=g.user)
+        return render_template('Homepage.html')
     else:
         return redirect(url_for('login'))
 
@@ -96,7 +97,7 @@ def enroll():
         firstName = details['fname']
         lastName = details['lname']
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO student_info(First_Name, Last_Name) VALUES (%s, %s)", (firstName, lastName))
+        cur.execute("INSERT INTO Students(First_Name, Last_Name) VALUES (%s, %s)", (firstName, lastName))
         mysql.connection.commit()
         cur.close()
         return 'success'
@@ -107,14 +108,15 @@ def enroll():
 def login():
     if request.method == 'POST':
         session.pop('user_id', None)
-
         username = request.form['username']
         password = request.form['password']
-        #this bit needs call for login info 
-        if username == 'username' and password == 'password':
-            session['user_id'] = username
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute("SELECT * FROM Lecturers WHERE username = %s AND password = %s",(username, password,))
+        account = cursor.fetchone()
+        if account:
             session['logged_in'] = True
-
+            session['user_id'] = account['username']
+            session['password'] = account['password']
             return redirect(url_for('homepage'))
         else:
             return redirect(url_for('login'))
