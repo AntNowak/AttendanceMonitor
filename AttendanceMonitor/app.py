@@ -68,7 +68,7 @@ def before_request():
     g.user = None
 
     if 'user_id' in session:
-        user = 'username' #name of user needs to be taken from databse
+        user = session['user_id'] #name of user needs to be taken from databse
         g.user = user
 
 @app.route('/')
@@ -86,22 +86,26 @@ def index():
 @app.route('/homepage')
 def homepage():
     if session.get('logged_in') == True:
-        return render_template('Homepage.html')
+        return render_template('Homepage.html', name=g.user)
     else:
         return redirect(url_for('login'))
 
 @app.route('/enroll', methods=['GET', 'POST'])
 def enroll():
-    if request.method == "POST":
-        details = request.form
-        firstName = details['fname']
-        lastName = details['lname']
-        cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO Students(First_Name, Last_Name) VALUES (%s, %s)", (firstName, lastName))
-        mysql.connection.commit()
-        cur.close()
-        return 'success'
-    return render_template('Enroll.html')
+    if session.get('logged_in') == True:
+        if request.method == "POST":
+            details = request.form
+            firstName = details['fname']
+            lastName = details['lname']
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO Students(First_Name, Last_Name) VALUES (%s, %s)", (firstName, lastName))
+            mysql.connection.commit()
+            cur.close()
+            return 'success'
+        return render_template('Enroll.html')
+    else:
+        return redirect(url_for('login'))
+
 
 
 @app.route('/Login', methods=['GET', 'POST'])
