@@ -85,7 +85,7 @@ def background_thread():
                 state = 0
                 wait_start = -1
             else:
-                socketio.emit('image_data', { 'buffer': 'data:image/jpg;base64,'+data, 'wait_timer' : round(current_wait, 2)})
+                socketio.emit('image_data', { 'buffer': 'data:image/jpg;base64,'+data, 'wait_timer' : round(8-current_wait, 2)})
 
 
 @app.before_request
