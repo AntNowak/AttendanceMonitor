@@ -26,7 +26,10 @@
                     return "Student ID: " + msg.student_id
                 });
                 $('#confidence').text(function (i, oldText) {
-                    return "Distance (lower the better): " + msg.confidence
+                    if(msg.wait_timer != "-1")
+                        return "Please wait: " + msg.wait_timer
+                    else
+                        return "Distance (lower the better): " + msg.confidence
                 });
             });
         });
