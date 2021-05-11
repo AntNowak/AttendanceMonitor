@@ -26,8 +26,6 @@ body {
     color: white;
 }
 
-
-
 /*button design*/
 button[type=submit] {
     padding: 5px 15px;
@@ -41,11 +39,12 @@ button[type=submit] {
     color: white;
 }
 
-    /*changes colour when hovered over*/
+/*changes colour when hovered over*/
 button[type=submit]:hover {
     background-color: rgb(72, 73, 75);
 }
 
+/*settings for the input boxes on the login page*/
 input {
     width: 80%;
     padding: 5px;

@@ -4,7 +4,11 @@ from flask_socketio import SocketIO, emit, disconnect
 from recog import Recogniser
 from recog import MaskRecogniser
 from flask_mysqldb import MySQL
+import MySQLdb as MySQLAsync
+import MySQLdb.cursors
 import cv2
+import datetime
+import base64
 
 # Set this variable to "threading", "eventlet" or "gevent" to test the
 # different async modes, or leave it set to None for the application to choose
@@ -22,10 +26,8 @@ mysql.init_app(app)
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'root'
+app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'studentrecog'
-
-
 
 def background_thread():
     state = 0
@@ -37,12 +39,13 @@ def background_thread():
     m = MaskRecogniser()
     m.set_camera(cam)
     r.set_camera(cam)
+    wait_start = -1
 
     while True:
         socketio.sleep(0.03)
         if(state == 0):
             r1, r2, image = r.get_student_id()
-            socketio.emit('image_data', { 'buffer':  'data:image/jpg;base64,'+image, 'student_id' : r1, 'confidence' : r2})
+            socketio.emit('image_data', { 'buffer':  'data:image/jpg;base64,'+image, 'student_id' : r1, 'confidence' : r2 , 'wait_timer' : '-1'})
             if(r2 < 90) and (r2 != -1 and r1 != -1):
                 print("Found Student ID: " + str(r1))
                 found_student_id = r1
@@ -51,23 +54,46 @@ def background_thread():
                 socketio.emit('state_change', { 'new_state':  'mask' })
         elif(state == 1):
            _, r2, image = m.get_mask()
-           socketio.emit('image_data', { 'buffer': 'data:image/jpg;base64,'+image, 'student_id' : found_student_id, 'confidence' : str(r2)})
+           socketio.emit('image_data', { 'buffer': 'data:image/jpg;base64,'+image, 'student_id' : found_student_id, 'confidence' : str(r2) , 'wait_timer' : '-1'})
            if(r2 >= 0.9999):
                 state = 2
                 socketio.emit('state_change', { 'new_state':  'update database' })
         elif(state == 2):
-            #MAKE DATABASE REQUEST
+            #MAKE DATABASE REQUEST    
+            #Mysql in this case has to be manually connected, flask_mysqldb will not instantiate the connection...
+            #Hence... NoneType
+            mysql_async = MySQLAsync.connect("localhost", "root", "", "studentrecog")
+            cur = mysql_async.cursor()
+            cur.execute("INSERT attendance_register SET Student_ID = "+str(found_student_id)+", Lecture_ID ='1', Present = '1'")
+            mysql_async.commit()
+            cur.close()
             found_student_id = -1
             found_confidence = 0 
-            state = 0
-            socketio.emit('state_change', { 'new_state':  'face' })
+            socketio.emit('state_change', { 'new_state':  'wait' })
+            state = 3
+        elif(state == 3):
+            #Use default camera image whilst we wait
+            ret, image = cam.read()
+            ret, image2 = cv2.imencode('.jpg', image)
+            data = base64.b64encode(image2).decode("UTF-8")
+
+            if(wait_start == -1):
+                wait_start = datetime.datetime.now()
+            current_wait = (datetime.datetime.now() - wait_start).total_seconds()
+            if(current_wait > 8):
+                socketio.emit('state_change', { 'new_state':  'face' })
+                state = 0
+                wait_start = -1
+            else:
+                socketio.emit('image_data', { 'buffer': 'data:image/jpg;base64,'+data, 'wait_timer' : round(8-current_wait, 2)})
+
 
 @app.before_request
 def before_request():
     g.user = None
 
     if 'user_id' in session:
-        user = 'username' #name of user needs to be taken from databse
+        user = session['user_id'] #name of user needs to be taken from databse
         g.user = user
 
 @app.route('/')
@@ -85,36 +111,41 @@ def index():
 @app.route('/homepage')
 def homepage():
     if session.get('logged_in') == True:
-        return render_template('Homepage.html')
+        return render_template('Homepage.html', name=g.user)
     else:
         return redirect(url_for('login'))
 
 @app.route('/enroll', methods=['GET', 'POST'])
 def enroll():
-    if request.method == "POST":
-        details = request.form
-        firstName = details['fname']
-        lastName = details['lname']
-        cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO student_info(First_Name, Last_Name) VALUES (%s, %s)", (firstName, lastName))
-        mysql.connection.commit()
-        cur.close()
-        return 'success'
-    return render_template('student.html')
+    if session.get('logged_in') == True:
+        if request.method == "POST":
+            details = request.form
+            firstName = details['firstName']
+            lastName = details['lastName']
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO Students(First_Name, Last_Name) VALUES (%s, %s)", (firstName, lastName))
+            mysql.connection.commit()
+            cur.close()
+            return redirect(url_for('index'))
+        return render_template('Enroll.html')
+    else:
+        return redirect(url_for('login'))
+
 
 
 @app.route('/Login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         session.pop('user_id', None)
-
         username = request.form['username']
         password = request.form['password']
-
-        if username == 'username' and password == 'password':
-            session['user_id'] = username
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute("SELECT * FROM Lecturers WHERE username = %s AND password = %s",(username, password,))
+        account = cursor.fetchone()
+        if account:
             session['logged_in'] = True
-
+            session['user_id'] = account['username']
+            session['password'] = account['password']
             return redirect(url_for('homepage'))
         else:
             return redirect(url_for('login'))
