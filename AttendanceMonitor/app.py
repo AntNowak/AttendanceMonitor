@@ -126,7 +126,7 @@ def enroll():
             cur.execute("INSERT INTO Students(First_Name, Last_Name) VALUES (%s, %s)", (firstName, lastName))
             mysql.connection.commit()
             cur.close()
-            return 'success'
+            return redirect(url_for('index'))
         return render_template('Enroll.html')
     else:
         return redirect(url_for('login'))
