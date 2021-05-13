@@ -1,4 +1,4 @@
-/* Lectures and homepage style sheet */
+/* Lectures, homepage and enrollment style sheet */
 
 .homeColumn { /* container upcoming lecture table on homepage */
     margin: 0;
@@ -143,8 +143,7 @@ body { /*background colours*/
     background-size: cover;
 }
 
-/*design for Enrollment container
-   not part of release*/
+/*design for Enrollment container*/
 .enroll-container {
     margin: 0;
     padding-top: 5%;
@@ -159,6 +158,26 @@ body { /*background colours*/
     background-position: center;
     color: white;
 }
+
+/*button design*/
+button[type=submit] {
+    padding: 5px 15px;
+    background: rgb(65, 65, 65);
+    border: 1px solid rgb(0, 0, 0);
+    cursor: pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-family: "Times New Roman", Times, serif;
+    color: white;
+}
+
+ /*changes colour when hovered over*/
+button[type=submit]:hover {
+    background-color: #0648c1;
+}
+/*Enrollment container finished*/
+
 
 .webcamImage { /* displays webcame image within webcam container */
     display: block;
