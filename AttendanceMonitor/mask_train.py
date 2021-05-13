@@ -9,6 +9,7 @@ from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D
 from keras.layers import Activation, Dropout, Flatten, Dense
 
+#loading images of mask/unmasked dataset with validation images
 class MaskTrainNN:
     def load_training_set2(self):
         train_datagen = ImageDataGenerator(
@@ -23,12 +24,14 @@ class MaskTrainNN:
 
         test_datagen = ImageDataGenerator(rescale=1./255)
 
+        #training set
         train_generator = train_datagen.flow_from_directory(
             'temp_data/train', 
             target_size=(200, 200), 
             batch_size=4,
             class_mode='binary')  
 
+        #validation set
         validation_generator = test_datagen.flow_from_directory(
             'temp_data/validation',
             target_size=(200, 200),
@@ -87,6 +90,7 @@ class MaskTrainNN:
         np_id = np.array(ids, dtype=np.float32)
         return np_im.astype(np.float32), np_id.astype(np.float32)
 
+    #keras used for model
     def build_model(self):
         model = tf.keras.models.Sequential([
             tf.keras.layers.Conv2D(100, (3,3), activation='relu', input_shape=(200, 200, 3)),
@@ -103,6 +107,7 @@ class MaskTrainNN:
         model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
         return model
 
+    #run training for mask/unmask detection
     def run_training2(self):
         model = self.build_model()
         train_generator, validation_generator = self.load_training_set2()
@@ -141,8 +146,8 @@ class MaskTrainNN:
         print("Done")
         
         
-#----- OLD WAY OF TRAINING --- NOT USED-----
-#https://github.com/X-zhangyang/Real-World-Masked-Face-Dataset - masked dataset source 
+#----- OLD METHOD OF TRAINING --- NOT USED DUE TO .YML TOO BIG (11gb+ with supplied dataset)-----
+#https://github.com/X-zhangyang/Real-World-Masked-Face-Dataset - masked dataset source - NOT USED
 class MaskTrain:
     def run_training(self):
         mask_data_dir = "mask_data"

@@ -21,6 +21,7 @@ socketio = SocketIO(app, async_mode=async_mode)
 thread = None
 thread_lock = Lock()
 
+#database connection
 mysql = MySQL()
 mysql.init_app(app)
 
@@ -30,6 +31,7 @@ app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'studentrecog'
 
 def background_thread():
+    #Intial state values
     state = 0
     found_student_id = -1
     found_confidence = -1
@@ -43,6 +45,7 @@ def background_thread():
 
     while True:
         socketio.sleep(0.03)
+        #Face state - detecting studentID using recogniser
         if(state == 0):
             r1, r2, image = r.get_student_id()
             socketio.emit('image_data', { 'buffer':  'data:image/jpg;base64,'+image, 'student_id' : r1, 'confidence' : r2 , 'wait_timer' : '-1'})
@@ -52,16 +55,17 @@ def background_thread():
                 found_confidence = r2
                 state = 1
                 socketio.emit('state_change', { 'new_state':  'mask' })
+        #Mask state - detecting if student is masked using maskrecogniser
         elif(state == 1):
            _, r2, image = m.get_mask()
            socketio.emit('image_data', { 'buffer': 'data:image/jpg;base64,'+image, 'student_id' : found_student_id, 'confidence' : str(r2) , 'wait_timer' : '-1'})
            if(r2 >= 0.9999):
                 state = 2
                 socketio.emit('state_change', { 'new_state':  'update database' })
+        #Database state - making database request to insert student into attendance register 
         elif(state == 2):
-            #MAKE DATABASE REQUEST    
-            #Mysql in this case has to be manually connected, flask_mysqldb will not instantiate the connection...
-            #Hence... NoneType
+            
+            #Mysql in this case has to be manually connected, flask_mysqldb will not instantiate the connection
             mysql_async = MySQLAsync.connect("localhost", "root", "", "studentrecog")
             cur = mysql_async.cursor()
             cur.execute("INSERT attendance_register SET Student_ID = "+str(found_student_id)+", Lecture_ID ='1', Present = '1'")
@@ -71,6 +75,7 @@ def background_thread():
             found_confidence = 0 
             socketio.emit('state_change', { 'new_state':  'wait' })
             state = 3
+        #Waiting state - Without waiting state, system is too quick going back to face state
         elif(state == 3):
             #Use default camera image whilst we wait
             ret, image = cam.read()
@@ -100,6 +105,7 @@ def before_request():
 def blank():
     return redirect(url_for('login'))
 
+#lecture render
 @app.route('/lectures')
 def index():
     if session.get('logged_in') == True:
@@ -107,7 +113,7 @@ def index():
     else:
         return redirect(url_for('login'))
         
-
+#homepage render
 @app.route('/homepage')
 def homepage():
     if session.get('logged_in') == True:
@@ -115,6 +121,7 @@ def homepage():
     else:
         return redirect(url_for('login'))
 
+#enroll render with database entry of student
 @app.route('/enroll', methods=['GET', 'POST'])
 def enroll():
     if session.get('logged_in') == True:
@@ -132,7 +139,7 @@ def enroll():
         return redirect(url_for('login'))
 
 
-
+#login render with database connection for login information
 @app.route('/Login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':

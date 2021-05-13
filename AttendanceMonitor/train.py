@@ -13,6 +13,7 @@ class Train:
     def __del__(self):
         self.cam.release()
 
+    #creating student directories based on supplied studentID
     def create_student_dir(self, student_id):
         user_data_dir = "user_data"
         if (not path.exists(user_data_dir)):
@@ -28,10 +29,10 @@ class Train:
         user_dirs = listdir(user_data_dir)
         images = []
         ids = []
-        #interate the student IDs
+        #iterate the student IDs
         for u in user_dirs:
             user_files = listdir(user_data_dir + "/" + u)
-            #interating student images for IDs
+            #iterating student images for IDs
             for f in user_files:
                 image = cv2.imread(user_data_dir + "/" + u + "/" + f)
                 image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -41,7 +42,7 @@ class Train:
         recogniser.train(images, np.array(ids))
         recogniser.write("student_train.yml")
 
-
+    #generate training set of student images, takes 30 images of the student when the face is detected
     def generate_training_set(self, student_id):
         student_dir = self.create_student_dir(student_id)
         number_of_images = 30

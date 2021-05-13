@@ -6,6 +6,7 @@ import numpy as np
 
 class MaskRecogniser:
     def __init__ (self):
+        #initialsing and loading training files
         self.cam = None
         json_file = open('model.json', 'r')
         loaded_model_json = json_file.read()
@@ -24,6 +25,7 @@ class MaskRecogniser:
     def set_camera(self, camera):
         self.cam = camera
 
+    #detecting mask
     def get_mask(self):
         ret, image = self.cam.read()
         if(not ret):
@@ -35,12 +37,15 @@ class MaskRecogniser:
             np_arr = np.expand_dims(np_arr, axis = 0)
             prediction = self.model.predict(np_arr/255)
 
+            #box for face detection
             (x, y, w, h) = bounding_box
             cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)
 
             student_info = "Mask: " + str(prediction)
+            #masked - threshold for prediction if mask is on student
             if(prediction > 0.9999):
                 cv2.putText(image, student_info, (x, y + h), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+            #unmasked
             else:  
                 cv2.putText(image, student_info, (x, y + h), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
             
@@ -54,6 +59,7 @@ class MaskRecogniser:
 
 
 class Recogniser:
+    #initialsing and loading training file
     def __init__ (self):
         self.cam = None
         self.recogniser = cv2.face.LBPHFaceRecognizer_create()
@@ -74,6 +80,8 @@ class Recogniser:
         if(not image_grey.size == 0):
             studentID, confidence = self.recogniser.predict(image_grey)
             #is_mask, confidence = self.mask_recogniser.predict(image_grey)
+
+            #box for face detection
             (x, y, w, h) = bounding_box
             cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)
 
