@@ -113,9 +113,9 @@ def index():
 def homepage():
     if session.get('logged_in') == True:
         currentDate = date.today()
-        curDate = currentDate.strftime("%Y-%m-%d")
+        corDateT = currentDate.strftime("%Y-%m-%d %H:%M:%S")
         cur = mysql.connection.cursor()
-        cur.execute("SELECT Module_Name, Start_Date, End_Date FROM modules Where End_Date >= %s",(curDate, ))
+        cur.execute("SELECT Module_Name, Start_DateTime, End_DateTime FROM lectures INNER JOIN modules ON lectures.Module_ID=modules.Module_ID Where Start_DateTime >= %s ORDER BY Start_DateTime ASC",(corDateT, ))
         mods = cur.fetchall()
         return render_template('Homepage.html', name=g.user, data=mods)
     else:
