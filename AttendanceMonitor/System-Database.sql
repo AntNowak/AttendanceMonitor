@@ -118,17 +118,17 @@ values
 ('1', 'Programming Fundamentals', '2020/08/15', '2020/12/03'),
 ('1', 'Algorithms and Complexity', '2020/08/15', '2020/12/13'),
 ('1', 'Computer Architectures', '2020/12/03', '2021/03/18'),
-('1', 'Maths for Computing', '2020/12/13', '2021/04/10'),
+('1', 'Maths for Computing', '2020/12/13', '2021/05/28'),
 ('1', 'Problem Solving', '2020/08/01', '2021/02/14'),
 ('2', 'Advanced Programming', '2020/08/15', '2020/12/03'),
 ('2', 'Artifical Intelligence', '2020/08/15', '2020/12/13'),
-('2', 'Network Fundamentals', '2020/12/03', '2021/03/18'),
-('2', 'Scalable Databases', '2020/12/13', '2021/04/10'),
-('2', 'User Experience', '2020/08/01', '2021/02/14'),
+('2', 'Network Fundamentals', '2020/12/03', '2021/05/26'),
+('2', 'Scalable Databases', '2020/12/13', '2021/05/28'),
+('2', 'User Experience', '2020/12/01', '2021/05/24'),
 ('3', 'Big Data', '2020/08/15', '2020/12/03'),
 ('3', 'Machine Learning', '2020/08/15', '2020/12/13'),
-('3', 'Parallel Programming', '2020/12/03', '2021/03/18'),
-('3', 'Project', '2020/12/13', '2021/04/10'),
+('3', 'Parallel Programming', '2020/12/03', '2021/05/25'),
+('3', 'Project', '2020/12/13', '2021/05/21'),
 ('3', 'Option', '2020/08/01', '2021/02/14');
 
 INSERT INTO StudentRecog.Lecturers (Lecturer_First_Name, Lecturer_Last_Name, DOB, Gender, Address_Line_1, Address_Line_2, Postcode, Phone_Num, Email_Address, username, password)
@@ -141,7 +141,9 @@ values
 
 INSERT INTO StudentRecog.Lectures (Module_ID, Lecturer_ID, Start_DateTime, End_DateTime)
 values
-('1', '1', '2020-09-15 08:00:00', '2020-09-15 10:00:00');
+('4', '1', '2021-05-28 08:00:00', '2021-05-28 10:00:00'),
+('13', '4', '2021-05-27 08:00:00', '2021-05-27 10:00:00'),
+('10', '5', '2021-05-26 08:00:00', '2021-05-26 10:00:00');
 
 INSERT INTO StudentRecog.Attendance_Register ()
 values
