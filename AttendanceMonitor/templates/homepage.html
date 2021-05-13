@@ -27,29 +27,27 @@
     <br><br><br>
     <div class="homeColumn">
         <center>
-            <h1>Upcoming Lectures</h1>
+            <h1>Modules</h1>
             <br /><br />
             <table class="upcomingLectures">
                 <thead>
                     <tr>
                         <!--table headers-->
-                        <th>Start Time</th>
                         <th>Module</th>
-                        <th>End Time</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!--Items in the table go inside the th tags-->
-                    <tr class="activeRow">
-                        <td>10:00</td>
-                        <td>User Experience</td>
-                        <td>12:00</td>
-                    </tr>
-                    <tr>
-                        <td>14:00</td>
-                        <td>Team Sofftware Engineering</td>
-                        <td>16:00</td>
-                    </tr> <!--next row-->
+                    <!-- loop though values from database array -->
+                    {% for row in data %} 
+                        <tr>
+                            <td>{{row[0]}}</td> <!-- module name -->
+                            <td>{{row[1]}}</td> <!-- start date -->
+                            <td>{{row[2]}}</td> <!-- end date -->
+                        </tr> <!--next row-->
+                    {% endfor %}
                 </tbody>
             </table>
         </center>

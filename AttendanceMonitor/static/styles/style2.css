@@ -2,14 +2,14 @@
 
 .homeColumn { /* container upcoming lecture table on homepage */
     margin: 0;
-    padding-top: 2%;
-    padding-bottom: 2%;
+    padding-top: 1%;
+    padding-bottom: 1%;
     width: 70%;
     min-width: 650px;
     display: block;
-    top: 65%;
+    top: 55%;
     left: 50%;
-    transform: translate(20%, 50%);
+    transform: translate(20%, 30%);
     color: rgb(255, 255, 255);
     background-color: #d83131;
     border-radius: 15px;
