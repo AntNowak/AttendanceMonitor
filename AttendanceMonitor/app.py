@@ -4,6 +4,7 @@ from flask_socketio import SocketIO, emit, disconnect
 from recog import Recogniser
 from recog import MaskRecogniser
 from flask_mysqldb import MySQL
+from datetime import date
 import MySQLdb as MySQLAsync
 import MySQLdb.cursors
 import cv2
@@ -117,7 +118,12 @@ def index():
 @app.route('/homepage')
 def homepage():
     if session.get('logged_in') == True:
-        return render_template('Homepage.html', name=g.user)
+        currentDate = date.today()
+        corDateT = currentDate.strftime("%Y-%m-%d %H:%M:%S")
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT Module_Name, Start_DateTime, End_DateTime FROM lectures INNER JOIN modules ON lectures.Module_ID=modules.Module_ID Where Start_DateTime >= %s ORDER BY Start_DateTime ASC",(corDateT, ))
+        mods = cur.fetchall()
+        return render_template('Homepage.html', name=g.user, data=mods)
     else:
         return redirect(url_for('login'))
 
